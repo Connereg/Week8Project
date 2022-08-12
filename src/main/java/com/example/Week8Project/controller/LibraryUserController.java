@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+//@RequestMapping
 public class LibraryUserController {
     @Autowired
     private LibraryUserService libraryUserService;
 
-    @PostMapping
+    @PostMapping("/users")
     public GetLibraryUserDTO createLibraryUser(@Valid @RequestBody CreateLibraryUserDTO createLibraryUserDTO) {
         return libraryUserService.createLibraryUser(createLibraryUserDTO);
     }
@@ -25,5 +25,10 @@ public class LibraryUserController {
     public GetUserReadingListDTO getLibraryUser(@PathVariable Long id) {
         return libraryUserService.getUserReadingList(id);
 
+    }
+
+    @DeleteMapping("/users/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        libraryUserService.deleteUser(id);
     }
 }

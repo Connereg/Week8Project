@@ -5,7 +5,9 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
+
 
 @Data
 public class CreateBookDTO {
@@ -16,7 +18,15 @@ public class CreateBookDTO {
     @Min(1)
     private int pages;
 
-    @NotNull
-    private Date published;
+    @NotBlank
+    private LocalDate published;
+
+    /////////////////////////  BUILD CONNECTIONS TO AUTHOR AND GENRE TABLES
+//    @NotBlank
+//    private Long authorId;
+//
+//    @NotBlank
+//    private List<Long> genreIds;
+
 
 }

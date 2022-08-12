@@ -38,6 +38,8 @@ public class LibraryUserService {
         return userReadingListDTO;
     }
 
+    public void deleteUser(Long id) { libraryUserRepository.deleteById(id);}
+
 //    public GetLibraryUserDTO getLibraryUser(Long id) {
 //        LibraryUser libraryUser = libraryUserRepository.findById(id).orElseThrow(() -> new NotFoundException("User not Found"));
 //        GetLibraryUserDTO libraryUserDTO = modelMapper.map(libraryUser, GetLibraryUserDTO.class);

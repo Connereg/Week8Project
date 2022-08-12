@@ -8,7 +8,9 @@ import com.example.Week8Project.repository.BookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +23,7 @@ public class BookService {
     private ModelMapper modelMapper;
 
 
-    public GetBooksDTO createBook(CreateBookDTO createBookDTO) {
+    public GetBooksDTO createBook(@Valid @RequestBody CreateBookDTO createBookDTO) {
         Book book = modelMapper.map(createBookDTO, Book.class);
         return modelMapper.map(bookRepository.save(book), GetBooksDTO.class);
     }
@@ -48,7 +50,6 @@ public class BookService {
         GetBooksDTO bookDTO = bookRepository.findById(id)
                 .map(book -> modelMapper.map(book, GetBooksDTO.class)).orElseThrow(() -> new NotFoundException("Book not found"));
         return bookDTO;
-
     }
 
     public void deleteBook(Long id) {

@@ -8,12 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "Book")
 @Getter
 @Setter
 public class Book {
@@ -30,14 +30,10 @@ public class Book {
     private int pages;
 
     @NotNull
-    private Date published;
+    private LocalDate published;
 
     @ManyToMany
     private List<ReadingList> readingLists = new ArrayList<>();
-
-    public void addReadingList(ReadingList readinglist) {
-        readingLists.add(readinglist);
-    }
 
     @ManyToOne
     private Author author;
@@ -47,5 +43,9 @@ public class Book {
 
     public void addGenre(Genre genre) {
         genreList.add(genre);
+    }
+
+    public void addReadingList(ReadingList readinglist) {
+        readingLists.add(readinglist);
     }
 }
