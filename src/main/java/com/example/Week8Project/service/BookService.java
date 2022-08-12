@@ -5,8 +5,10 @@ import com.example.Week8Project.dto.GetBooksDTO;
 import com.example.Week8Project.exception.NotFoundException;
 import com.example.Week8Project.model.Author;
 import com.example.Week8Project.model.Book;
+import com.example.Week8Project.model.Genre;
 import com.example.Week8Project.repository.AuthorRepository;
 import com.example.Week8Project.repository.BookRepository;
+import com.example.Week8Project.repository.GenreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +27,8 @@ public class BookService {
 
     @Autowired
     private AuthorRepository authorRepository;
-
+    @Autowired
+    private GenreRepository genreRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -32,8 +36,12 @@ public class BookService {
 
     public GetBooksDTO createBook(@Valid @RequestBody CreateBookDTO createBookDTO) {
         Author author = authorRepository.findById(createBookDTO.getAuthorId()).orElseThrow(() -> new NotFoundException("Author not found"));
+        Genre genre = genreRepository.findById(createBookDTO.getGenreId()).orElseThrow(() -> new NotFoundException("Genre not found"));
         Book book = modelMapper.map(createBookDTO, Book.class);
         book.setAuthor(author);
+        List<Genre> genreList = new ArrayList<>();
+        genreList.add(genre);
+        book.setGenreList(genreList);
         // authorName in createBookDTO => use authorName to construct new Author obj
         // Convert authorDTO to author obj
         // Add my author to my Book Obj

@@ -13,6 +13,7 @@ public class GetBooksDTO {
     private int pages;
     private Date published;
     private GetAuthorDTO author;
+    private GetGenreDTO genre;
 
 
 
