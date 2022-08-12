@@ -38,7 +38,14 @@ public class LibraryUserService {
         return userReadingListDTO;
     }
 
-    public void deleteUser(Long id) { libraryUserRepository.deleteById(id);}
+    public void deleteUser(Long id) {
+        if (libraryUserRepository.existsById(id)) {
+            libraryUserRepository.deleteById(id);
+        } else {
+            throw new NotFoundException("User not found for deletion");
+        }
+    }
+
 
 //    public GetLibraryUserDTO getLibraryUser(Long id) {
 //        LibraryUser libraryUser = libraryUserRepository.findById(id).orElseThrow(() -> new NotFoundException("User not Found"));

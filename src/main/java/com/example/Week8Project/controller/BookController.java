@@ -1,10 +1,14 @@
 package com.example.Week8Project.controller;
 
+import com.example.Week8Project.dto.CreateAuthorDTO;
 import com.example.Week8Project.dto.CreateBookDTO;
+import com.example.Week8Project.dto.GetAuthorDTO;
 import com.example.Week8Project.dto.GetBooksDTO;
 import com.example.Week8Project.model.Book;
+import com.example.Week8Project.service.AuthorService;
 import com.example.Week8Project.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,7 +22,10 @@ public class BookController {
 
     @PostMapping("/books")
     public GetBooksDTO createBook(@Valid @RequestBody CreateBookDTO createBookDTO) {
+        // Create AuthorDTO from the CreateBookDTO authorname property
+
        GetBooksDTO createdBook = bookService.createBook(createBookDTO);
+
        return createdBook;
     }
     @GetMapping("/books")

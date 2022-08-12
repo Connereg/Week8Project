@@ -3,10 +3,13 @@ package com.example.Week8Project.service;
 import com.example.Week8Project.dto.CreateBookDTO;
 import com.example.Week8Project.dto.GetBooksDTO;
 import com.example.Week8Project.exception.NotFoundException;
+import com.example.Week8Project.model.Author;
 import com.example.Week8Project.model.Book;
+import com.example.Week8Project.repository.AuthorRepository;
 import com.example.Week8Project.repository.BookRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -20,11 +23,20 @@ public class BookService {
     private BookRepository bookRepository;
 
     @Autowired
+    private AuthorRepository authorRepository;
+
+
+    @Autowired
     private ModelMapper modelMapper;
 
 
     public GetBooksDTO createBook(@Valid @RequestBody CreateBookDTO createBookDTO) {
+        Author author = authorRepository.findById(createBookDTO.getAuthorId()).orElseThrow(() -> new NotFoundException("Author not found"));
         Book book = modelMapper.map(createBookDTO, Book.class);
+        book.setAuthor(author);
+        // authorName in createBookDTO => use authorName to construct new Author obj
+        // Convert authorDTO to author obj
+        // Add my author to my Book Obj
         return modelMapper.map(bookRepository.save(book), GetBooksDTO.class);
     }
 
@@ -53,6 +65,13 @@ public class BookService {
     }
 
     public void deleteBook(Long id) {
-        bookRepository.deleteById(id);
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+        }
+        else {
+            throw new NotFoundException("Book not found");
+        }
+
+
     }
 }

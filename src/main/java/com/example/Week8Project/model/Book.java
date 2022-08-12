@@ -8,8 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,15 +22,14 @@ public class Book {
     private Long id;
 
     @NotBlank
-    @NotNull
     private String title;
 
     @NotNull
     @Min(1)
     private int pages;
 
-    @NotNull
-    private LocalDate published;
+    @Temporal(TemporalType.DATE)
+    private Date published;
 
     @ManyToMany
     private List<ReadingList> readingLists = new ArrayList<>();
