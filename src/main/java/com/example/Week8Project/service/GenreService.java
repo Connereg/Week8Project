@@ -12,6 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class GenreService {
 
@@ -21,15 +24,17 @@ public class GenreService {
     @Autowired
     ModelMapper modelMapper;
 
-    public GetGenreDTO createGenre(CreateGenreDTO createGenreDTO) {
-        if (!genreRepository.existsById(createGenreDTO.getId())) {
-            Genre genre = modelMapper.map(createGenreDTO, Genre.class);
-            genreRepository.save(genre);
-            return modelMapper.map(genre, GetGenreDTO.class);
+    public List<Genre> createGenres(List<String> createdGenresNames) {
+        List<Genre> allCreatedGenres = new ArrayList<>();
+
+        for(int i = 0; i < createdGenresNames.size(); i++) {
+            Genre newGenre = new Genre();
+            newGenre.setName(createdGenresNames.get(i));
+           genreRepository.save(newGenre);
+           allCreatedGenres.add(newGenre);
         }
-        else {
-            return modelMapper.map(genreRepository.findById(createGenreDTO.getId()), GetGenreDTO.class);
-        }
+
+        return allCreatedGenres;
     }
 
     public GetGenreDTO getGenre(Long id) {

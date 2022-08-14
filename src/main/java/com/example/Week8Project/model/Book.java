@@ -3,6 +3,7 @@ package com.example.Week8Project.model;
 import com.fasterxml.jackson.databind.DatabindException;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -34,10 +35,10 @@ public class Book {
     @ManyToMany
     private List<ReadingList> readingLists = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Author author;
 
-    @ManyToMany(mappedBy = "bookList")
+    @ManyToMany(mappedBy = "bookList", cascade = CascadeType.DETACH)
     private List<Genre> genreList = new ArrayList<>();
 
     public void addGenre(Genre genre) {

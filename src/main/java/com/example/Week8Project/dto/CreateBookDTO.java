@@ -27,7 +27,7 @@ public class CreateBookDTO {
     private Long authorId;
 
     @NotNull
-    private Long genreId;
+    private List<String> genreNames;
 
     /////////////////////////  BUILD CONNECTIONS TO AUTHOR AND GENRE TABLES
 //    @NotBlank

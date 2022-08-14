@@ -19,14 +19,9 @@ public class AuthorService {
     ModelMapper modelMapper;
 
     public GetAuthorDTO createAuthor(CreateAuthorDTO createAuthorDTO) {
-        if (!authorRepository.existsById(createAuthorDTO.getId())) {
             Author author = modelMapper.map(createAuthorDTO, Author.class);
             authorRepository.save(author);
             return modelMapper.map(author, GetAuthorDTO.class);
-        }
-        else {
-            return modelMapper.map(authorRepository.findById(createAuthorDTO.getId()), GetAuthorDTO.class);
-        }
 
     }
 

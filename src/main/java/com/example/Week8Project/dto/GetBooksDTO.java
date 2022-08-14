@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class GetBooksDTO {
@@ -13,7 +14,7 @@ public class GetBooksDTO {
     private int pages;
     private Date published;
     private GetAuthorDTO author;
-    private GetGenreDTO genre;
+    private List<GetGenreDTO> genreList;
 
 
 

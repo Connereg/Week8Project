@@ -2,6 +2,7 @@ package com.example.Week8Project.service;
 
 import com.example.Week8Project.dto.CreateBookDTO;
 import com.example.Week8Project.dto.GetBooksDTO;
+import com.example.Week8Project.dto.GetGenreDTO;
 import com.example.Week8Project.exception.NotFoundException;
 import com.example.Week8Project.model.Author;
 import com.example.Week8Project.model.Book;
@@ -27,8 +28,9 @@ public class BookService {
 
     @Autowired
     private AuthorRepository authorRepository;
+
     @Autowired
-    private GenreRepository genreRepository;
+    private GenreService genreService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -36,12 +38,13 @@ public class BookService {
 
     public GetBooksDTO createBook(@Valid @RequestBody CreateBookDTO createBookDTO) {
         Author author = authorRepository.findById(createBookDTO.getAuthorId()).orElseThrow(() -> new NotFoundException("Author not found"));
-        Genre genre = genreRepository.findById(createBookDTO.getGenreId()).orElseThrow(() -> new NotFoundException("Genre not found"));
+        List<Genre> genreList = genreService.createGenres(createBookDTO.getGenreNames());
         Book book = modelMapper.map(createBookDTO, Book.class);
         book.setAuthor(author);
-        List<Genre> genreList = new ArrayList<>();
-        genreList.add(genre);
         book.setGenreList(genreList);
+        for (Genre genre : genreList) {
+            genre.addBook(book);
+        }
         // authorName in createBookDTO => use authorName to construct new Author obj
         // Convert authorDTO to author obj
         // Add my author to my Book Obj

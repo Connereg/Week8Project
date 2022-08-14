@@ -9,6 +9,5 @@ public class GetGenreDTO {
     private Long id;
 
     private String name;
-    private List<GetBooksDTO> booksOfGenre;
 
 }
