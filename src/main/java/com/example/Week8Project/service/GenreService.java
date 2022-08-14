@@ -1,12 +1,11 @@
 package com.example.Week8Project.service;
 
-import com.example.Week8Project.dto.CreateAuthorDTO;
-import com.example.Week8Project.dto.CreateGenreDTO;
-import com.example.Week8Project.dto.GetAuthorDTO;
-import com.example.Week8Project.dto.GetGenreDTO;
+import com.example.Week8Project.dto.*;
 import com.example.Week8Project.exception.NotFoundException;
 import com.example.Week8Project.model.Author;
+import com.example.Week8Project.model.Book;
 import com.example.Week8Project.model.Genre;
+import com.example.Week8Project.repository.BookRepository;
 import com.example.Week8Project.repository.GenreRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ public class GenreService {
     GenreRepository genreRepository;
 
     @Autowired
+    BookRepository bookRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     public List<Genre> createGenres(List<String> createdGenresNames) {
@@ -35,6 +37,19 @@ public class GenreService {
         }
 
         return allCreatedGenres;
+    }
+
+    public List<GenreBooksDTO> getAllBooksFromGenreId(Long id) {
+        List<GenreBooksDTO> listOfBookDTO = new ArrayList<>();
+
+        Genre genreById = genreRepository.findById(id).orElseThrow(() -> new NotFoundException("Genre Not Found"));
+        List<Book> listOfBooksByGenre = genreById.getBookList();
+        for (Book book : listOfBooksByGenre) {
+            GenreBooksDTO genreBookDTO = modelMapper.map(book, GenreBooksDTO.class);
+            listOfBookDTO.add(genreBookDTO);
+        }
+
+        return listOfBookDTO;
     }
 
     public GetGenreDTO getGenre(Long id) {

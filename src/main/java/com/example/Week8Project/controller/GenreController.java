@@ -1,7 +1,6 @@
 package com.example.Week8Project.controller;
 
-import com.example.Week8Project.dto.CreateGenreDTO;
-import com.example.Week8Project.dto.GetGenreDTO;
+import com.example.Week8Project.dto.*;
 import com.example.Week8Project.model.Genre;
 import com.example.Week8Project.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +24,14 @@ public class GenreController {
     public GetGenreDTO getGenre(@PathVariable Long id) { return genreService.getGenre(id); }
 
     @GetMapping("/genre/{id}/books")
-    public
+    public GetGenreBookListDTO getBooksFromGenre(@PathVariable Long id) {
+        GetGenreDTO genre = genreService.getGenre(id);
+        List<GenreBooksDTO> allBooksOfGenreDTO = genreService.getAllBooksFromGenreId(id);
+
+        GetGenreBookListDTO genreBookListOutput = new GetGenreBookListDTO();
+        genreBookListOutput.setName(genre.getName());
+        genreBookListOutput.setBookList(allBooksOfGenreDTO);
+
+        return genreBookListOutput;
+    }
 }
