@@ -6,6 +6,7 @@ import com.example.Week8Project.dto.GetUserReadingListDTO;
 import com.example.Week8Project.exception.NotFoundException;
 import com.example.Week8Project.model.LibraryUser;
 import com.example.Week8Project.repository.LibraryUserRepository;
+import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,15 +46,10 @@ public class LibraryUserService {
             throw new NotFoundException("User not found for deletion");
         }
     }
-
-
-//    public GetLibraryUserDTO getLibraryUser(Long id) {
-//        LibraryUser libraryUser = libraryUserRepository.findById(id).orElseThrow(() -> new NotFoundException("User not Found"));
-//        GetLibraryUserDTO libraryUserDTO = modelMapper.map(libraryUser, GetLibraryUserDTO.class);
-//        return libraryUserDTO;
-//    }
-
-
+    public LibraryUser getLibraryUser(Long id) {
+        LibraryUser libraryUser = libraryUserRepository.findById(id).orElseThrow(() -> new NotFoundException("User not Found"));
+        return libraryUser;
+    }
 
 
 }

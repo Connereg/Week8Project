@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequestMapping("")
+@RequestMapping("/api/")
 public class AuthorController {
     @Autowired
     private AuthorService authorService;

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-//@RequestMapping
+@RequestMapping("/api/")
 public class LibraryUserController {
     @Autowired
     private LibraryUserService libraryUserService;

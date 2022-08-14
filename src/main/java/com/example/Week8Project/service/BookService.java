@@ -56,6 +56,10 @@ public class BookService {
         bookToUpdate.setTitle(createBookDTO.getTitle());
         bookToUpdate.setPages(createBookDTO.getPages());
         bookToUpdate.setPublished(createBookDTO.getPublished());
+        Author updatedAuthor = authorRepository.findById(createBookDTO.getAuthorId()).orElseThrow(() -> new NotFoundException("Author Not Found"));
+        bookToUpdate.setAuthor(updatedAuthor);
+        List<Genre> updatedGenreList = genreService.createGenres(createBookDTO.getGenreNames());
+        bookToUpdate.setGenreList(updatedGenreList);
         bookRepository.save(bookToUpdate);
         GetBooksDTO bookToUpdateDTO = modelMapper.map(bookToUpdate, GetBooksDTO.class);
         return bookToUpdateDTO;
