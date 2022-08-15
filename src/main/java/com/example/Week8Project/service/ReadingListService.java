@@ -4,6 +4,7 @@ import com.example.Week8Project.dto.*;
 import com.example.Week8Project.model.Book;
 import com.example.Week8Project.model.LibraryUser;
 import com.example.Week8Project.model.ReadingList;
+import com.example.Week8Project.repository.BookRepository;
 import com.example.Week8Project.repository.LibraryUserRepository;
 import com.example.Week8Project.repository.ReadingListRepository;
 import org.modelmapper.ModelMapper;
@@ -26,6 +27,9 @@ public class ReadingListService {
     private LibraryUserRepository libraryUserRepository;
 
     @Autowired
+    private BookRepository bookRepository;
+
+    @Autowired
     @Lazy
     private LibraryUserService libraryUserService;
 
@@ -40,6 +44,10 @@ public class ReadingListService {
         ReadingList newReadingList = new ReadingList();
         List<Book> bookList = new ArrayList<>();
         LibraryUser targetedUser = libraryUserService.getLibraryUser(createUserReadingListDTO.getLibraryUserId());
+
+        newReadingList.setName(createUserReadingListDTO.getName());
+        targetedUser.addToUserReadingList(newReadingList);
+
         newReadingList.setLibraryUser(targetedUser);
 
         List<Long> listOfBookIds = createUserReadingListDTO.getListOfBookIds();
@@ -47,12 +55,12 @@ public class ReadingListService {
             GetBooksDTO bookDTOToAdd = bookService.getBookById(bookId);
             Book bookToAdd = modelMapper.map(bookDTOToAdd, Book.class);
             bookToAdd.addReadingList(newReadingList);
+            bookRepository.save(bookToAdd);
             bookList.add(bookToAdd);
-
         }
         newReadingList.setBookList(bookList);
-        newReadingList.setName(createUserReadingListDTO.getName());
-        targetedUser.getUserReadingList().add(newReadingList);
+
+        libraryUserRepository.save(targetedUser);
         readingListRepository.save(newReadingList);
 
        return modelMapper.map(newReadingList, GetUserReadingListDTO.class );
@@ -67,10 +75,6 @@ public class ReadingListService {
             readingLists.add(rlDTO);
         }
         return readingLists;
-//        List<GetBooksDTO> booksInReadingList = (for reading in userreadinglist) {
-//            userReadingLists.stream().map(readingList -> readingList.getBookList())
-//                    .map(book -> modelMapper.map(book, GetBooksDTO.class)).collect(Collectors.toList());
-//        }
 
     }
 

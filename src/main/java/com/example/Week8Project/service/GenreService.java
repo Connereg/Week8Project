@@ -21,21 +21,23 @@ public class GenreService {
     GenreRepository genreRepository;
 
     @Autowired
-    BookRepository bookRepository;
-
-    @Autowired
     ModelMapper modelMapper;
 
     public List<Genre> createGenres(List<String> createdGenresNames) {
         List<Genre> allCreatedGenres = new ArrayList<>();
 
-        for(int i = 0; i < createdGenresNames.size(); i++) {
-            Genre newGenre = new Genre();
-            newGenre.setName(createdGenresNames.get(i));
-           genreRepository.save(newGenre);
-           allCreatedGenres.add(newGenre);
+        for (int i = 0; i < createdGenresNames.size(); i++) {
+            if (genreRepository.findByName(createdGenresNames.get(i)) == null) {
+                Genre newGenre = new Genre();
+                newGenre.setName(createdGenresNames.get(i));
+                genreRepository.save(newGenre);
+                allCreatedGenres.add(newGenre);
+            } else {
+                allCreatedGenres.add(modelMapper.map(genreRepository
+                        .findByName(createdGenresNames
+                                .get(i)), Genre.class));
+            }
         }
-
         return allCreatedGenres;
     }
 

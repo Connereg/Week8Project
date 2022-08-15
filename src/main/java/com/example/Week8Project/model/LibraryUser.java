@@ -1,5 +1,6 @@
 package com.example.Week8Project.model;
 
+import com.example.Week8Project.service.ReadingListService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,4 +30,7 @@ public class LibraryUser {
     @OneToMany(mappedBy = "libraryUser")
     private List<ReadingList> userReadingList = new ArrayList<>();
 
+    public void addToUserReadingList(ReadingList readingList) {
+        this.userReadingList.add(readingList);
+    }
 }

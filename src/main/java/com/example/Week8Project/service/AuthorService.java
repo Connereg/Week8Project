@@ -19,9 +19,14 @@ public class AuthorService {
     ModelMapper modelMapper;
 
     public GetAuthorDTO createAuthor(CreateAuthorDTO createAuthorDTO) {
+//        if(authorRepository.findByName(createAuthorDTO.getName()).equals(createAuthorDTO.getName())) {
+//            return modelMapper.map(authorRepository.findByName(createAuthorDTO.getName()), GetAuthorDTO.class);
+//        }
+//        else {
             Author author = modelMapper.map(createAuthorDTO, Author.class);
             authorRepository.save(author);
             return modelMapper.map(author, GetAuthorDTO.class);
+//        }
 
     }
 

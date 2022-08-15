@@ -32,7 +32,7 @@ public class Book {
     @Temporal(TemporalType.DATE)
     private Date published;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<ReadingList> readingLists = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
